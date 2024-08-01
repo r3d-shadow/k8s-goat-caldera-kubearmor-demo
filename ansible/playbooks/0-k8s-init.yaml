@@ -142,7 +142,18 @@
       become: yes
       command: install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl
 
-    - name: Verify installation
+    - name: Download Helm installation script
+      get_url:
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: /tmp/get_helm.sh
+        mode: '0700'
+
+    - name: Run Helm installation script
+      command: /tmp/get_helm.sh
+      args:
+        creates: /usr/local/bin/helm
+        
+    - name: Verify k8s installation
       command: kubectl version --client
       register: kubectl_version
 
