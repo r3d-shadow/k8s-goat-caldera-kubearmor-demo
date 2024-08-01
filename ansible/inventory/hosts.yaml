@@ -1,0 +1,10 @@
+all:
+  children:
+    servers:
+      hosts:
+        server0:
+          ansible_connection: local
+    k8s:
+      hosts:
+        k8s0:
+          ansible_connection: local
