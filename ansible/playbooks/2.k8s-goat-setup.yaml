@@ -1,0 +1,21 @@
+---
+- name: Task
+  hosts: k8s
+  vars_files:
+    - ../vars.yaml
+  tasks:
+    - name: Print the hostname
+      debug:
+        msg: "host: {{ inventory_hostname }}"
+        
+    - name: Clone the Kubernetes Goat repository
+      git:
+        repo: https://github.com/madhuakula/kubernetes-goat.git
+        dest: /tmp/kubernetes-goat
+        update: yes
+
+    - name: Run the setup script for Kubernetes Goat
+      command: bash setup-kubernetes-goat.sh
+      args:
+        chdir: /tmp/kubernetes-goat
+        creates: /tmp/kubernetes-goat/setup-completed.flag
