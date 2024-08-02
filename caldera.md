@@ -18,6 +18,8 @@ This scenario demonstrates how to bypass namespace restrictions and access resou
     kubectl get pods -n secure-middleware -o json | jq -r '.items[].status.podIP'
     ```
 
+![](assets/0.png)
+
 ## Caldera Setup and Demonstration
 
 ### Prerequisites
@@ -113,6 +115,8 @@ Ensure you have the following installed:
 
 Replace `<CACHE_STORE_POD_IP>` with the IP address obtained from the previous Kubernetes command.
 
+![](assets/1.png)
+
 ### Starting Caldera
 
 1. Set the Caldera URL environment variable and start the Caldera server:
@@ -121,6 +125,8 @@ Replace `<CACHE_STORE_POD_IP>` with the IP address obtained from the previous Ku
     ```
 
 2. Open your browser and visit `http://<SERVER_IP>:8888/`. Use the default credentials (`admin:admin`) to log in.
+
+![](assets/2.png)
 
 ### Deploying the Caldera Agent
 
@@ -153,6 +159,7 @@ Assuming we have internal access to a Kubernetes pod, follow these steps to depl
     ```bash
     kubectl apply -f depl.yaml
     ```
+![](assets/3.png)
 
 3. Access the Ubuntu pod:
     ```bash
@@ -177,13 +184,19 @@ Assuming we have internal access to a Kubernetes pod, follow these steps to depl
 
 After running these commands, you should see the agent is live on the Caldera dashboard under the "Agents" tab.
 
+![](assets/4.png)
+
 ### Creating and Running an Operation
 
 1. Create a new adversary profile named "Demo" and add the abilities:
    - Hostname discover
    - Test (previously created with the YAML file and placed in the appropriate directories)
 
+![](assets/5.png)
+
 2. Open the "Operations" tab, create a new operation named "Demo," and select the adversary profile "Demo."
+
+![](assets/6.png)
 
 3. Start the operation.
 
@@ -193,6 +206,10 @@ After running these commands, you should see the agent is live on the Caldera da
     ```
 
     This will allow you to see the secret data stored in Redis.
+
+![](assets/7.png)
+
+![](assets/8.png)
 
 By following these steps, you can demonstrate the capabilities of Caldera in a Kubernetes environment and understand the potential security implications of namespace misconfigurations.
 
