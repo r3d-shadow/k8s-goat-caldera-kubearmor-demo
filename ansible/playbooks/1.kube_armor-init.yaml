@@ -35,7 +35,19 @@
     - name: Install KubeArmor chart
       register: kubearmor_install
       kubernetes.core.helm:
-        chart_ref: kubearmor/kubearmor-operator
-        name: kubearmor-operator
+        chart_ref: kubearmor/kubearmor-operator 
+        name: kubearmor-operator 
         namespace: kubearmor
     - debug: msg="{{ kubearmor_install.stdout }}"
+
+    - name: Download kubearmor sample-config
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/kubearmor/KubeArmor/main/pkg/KubeArmorOperator/config/samples/sample-config.yml
+        dest: /tmp/sample-config.yaml
+        mode: '0664'
+
+    - name: Apply kubearmor sample-config manifest
+      kubernetes.core.k8s:
+        state: present
+        src:  /tmp/sample-config.yaml
+        namespace: kubearmor
