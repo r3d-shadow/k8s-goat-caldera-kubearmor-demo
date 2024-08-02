@@ -86,7 +86,6 @@
 
     - name: Refresh group membership
       command: newgrp docker
-      become_user: "{{ ansible_user_id }}"
 
     - name: Run Docker hello-world
       command: docker run hello-world
