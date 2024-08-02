@@ -1,19 +1,49 @@
-# Demonstration Using Kubernetes Goat and Caldera
+# Demonstrating Namespace Bypass and Mitigation in Kubernetes Using Kubernetes Goat, Caldera and KubeArmor
 
-## Kubernetes Goat Scenario: Namespace Bypass
+## Setup Kubernetes Cluster
+
+Ensure you have `Ansible` and the `kubernetes.core` collection installed. Then, navigate to your Ansible directory and run the playbook to set up k3s, kubectl, and Helm:
+
+    ```bash
+    cd ansible
+    ansible-playbook 0.k8s-init.yaml
+    ```
+
+## KubeArmor Installation
+
+**KubeArmor** is a runtime security engine for Kubernetes. It utilizes eBPF and Linux Security Modules (LSM) to enforce policy-based controls for securing workloads. KubeArmor supports various environments, including Cloud Containers, IoT/Edge, and 5G networks.
+
+For more information, visit the [KubeArmor website](https://kubearmor.io/).
+
+Navigate to your Ansible directory and run the playbook to install KubeArmor:
+    
+    ```bash
+    cd ansible
+    ansible-playbook 1.kube_armor-init.yaml
+    ```
+
+## Kubernetes Goat Setup and Scenario: Namespace Bypass
+
+Kubernetes Goat is an interactive Kubernetes security learning playground designed to help you practice and understand Kubernetes security concepts
 
 This scenario demonstrates how to bypass namespace restrictions and access resources across namespaces.
 
+For more information, visit the [Kubernetes Goat website](https://madhuakula.com/kubernetes-goat/).
+
+Navigate to your Ansible directory and run the playbook to install KubeArmor:
+    
+    ```bash
+    cd ansible
+    ansible-playbook 2.k8s-goat-setup.yaml
+    ```
 ### Setup
 
-1. We have already deployed Kubernetes Goat.
-
-2. In Kubernetes Goat, there is a cache storage running in another namespace called `secure-middleware`:
+1. In Kubernetes Goat, there is a cache storage running in another namespace called `secure-middleware`:
     ```bash
     kubectl get pods -n secure-middleware
     ```
 
-3. For this demonstration, we will use the IP address of the `cache-store` pod in the `secure-middleware` namespace:
+2. For this demonstration, we will use the IP address of the `cache-store` pod in the `secure-middleware` namespace:
     ```bash
     kubectl get pods -n secure-middleware -o json | jq -r '.items[].status.podIP'
     ```
@@ -215,7 +245,7 @@ By following these steps, you can demonstrate the capabilities of Caldera in a K
 
 ## Mitigation with KubeArmor
 
-In this demonstration, We will then demonstrate how a KubeArmor policy can be used to prevent this attack by blocking tool installations.
+In this demonstration, We will then demonstrate how a KubeArmor policy can be used to prevent this attack by blocking tool installations. To enhance security, it’s important to restrict network access to minimize potential attack vectors and limit communication/networking between pods in addition to applying runtime security policies.
 
 To prevent the attack, we will use KubeArmor to block the installation of tools like `nmap` and `redis-tools` by preventing the use of `apt` within the pod.
 
