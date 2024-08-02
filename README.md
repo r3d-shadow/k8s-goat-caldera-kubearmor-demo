@@ -289,4 +289,6 @@ To prevent the attack, we will use KubeArmor to block the installation of tools 
 
 ## References
 
-- [Kubernetes Goat](https://madhuakula.com/kubernetes-goat/docs/scenarios/scenario-11/kubernetes-namespaces-bypass-from-kubernetes-cluster-pod/welcome)
+- [KubeArmor](https://kubearmor.io/)
+- [Kubernetes Goat](https://madhuakula.com/)
+- [caldera](https://caldera.mitre.org/)
