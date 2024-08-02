@@ -233,9 +233,12 @@ To prevent the attack, we will use KubeArmor to block the installation of tools 
        matchLabels:
          app: ubuntu
      process:
-       matchPaths:
-       - path: /usr/bin/apt
-       - path: /usr/bin/apt-get
+        matchPaths:
+        - path: /usr/bin/apt
+        - path: /usr/bin/apt-get
+        - path: /usr/bin/redis-cli
+        - path: /usr/bin/nmap
+        - path: /usr/share/nmap
      action:
        Block
    ```
@@ -248,6 +251,11 @@ To prevent the attack, we will use KubeArmor to block the installation of tools 
 2. **Run the Caldera Operation**
 
    With the KubeArmor policy applied, attempt to run the Caldera operation again. The operation should fail at the point where it tries to install tools, demonstrating the effectiveness of the policy in preventing tool-based attacks.
+
+![](assets/9.png)
+
+![](assets/10.png)
+
 
 ## References
 
