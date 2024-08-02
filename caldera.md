@@ -213,6 +213,42 @@ After running these commands, you should see the agent is live on the Caldera da
 
 By following these steps, you can demonstrate the capabilities of Caldera in a Kubernetes environment and understand the potential security implications of namespace misconfigurations.
 
+## Mitigation with KubeArmor
+
+In this demonstration, We will then demonstrate how a KubeArmor policy can be used to prevent this attack by blocking tool installations.
+
+To prevent the attack, we will use KubeArmor to block the installation of tools like `nmap` and `redis-tools` by preventing the use of `apt` within the pod.
+
+1. **Apply the KubeArmor Policy**
+
+   Create and apply a KubeArmor policy to block `apt` and `apt-get` commands:
+
+   ```yaml
+   apiVersion: security.kubearmor.com/v1
+   kind: KubeArmorPolicy
+   metadata:
+     name: block-pkg-mgmt-tools-exec
+   spec:
+     selector:
+       matchLabels:
+         app: ubuntu
+     process:
+       matchPaths:
+       - path: /usr/bin/apt
+       - path: /usr/bin/apt-get
+     action:
+       Block
+   ```
+
+   Apply the policy with:
+   ```bash
+   kubectl apply -f <your-policy-file>.yaml
+   ```
+
+2. **Run the Caldera Operation**
+
+   With the KubeArmor policy applied, attempt to run the Caldera operation again. The operation should fail at the point where it tries to install tools, demonstrating the effectiveness of the policy in preventing tool-based attacks.
+
 ## References
 
 - [Kubernetes Goat](https://madhuakula.com/kubernetes-goat/docs/scenarios/scenario-11/kubernetes-namespaces-bypass-from-kubernetes-cluster-pod/welcome)
